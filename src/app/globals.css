@@ -8,8 +8,6 @@
   box-sizing: border-box;
 }
 
-
-
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -148,8 +146,6 @@
   .bank-info_content {
     @apply flex flex-1 items-center justify-between gap-2 overflow-hidden;
   }
-
-  
 }
 
 @layer base {

@@ -1,8 +1,7 @@
 import PageLayout from "@/components/ui/PageLayout";
 
 export default function Home() {
-
-  const user = 'John Doe'
+  const user = "John Doe";
 
   return (
     <PageLayout>
@@ -13,5 +12,5 @@ export default function Home() {
         <p className="">Voici votre tableau de bord.</p>
       </div>
     </PageLayout>
-  )
+  );
 }
