@@ -1,11 +1,11 @@
-import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
+import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { userTable } from './users'
 
 export const sessionTable = pgTable('session', {
   id: text('id').primaryKey(),
-  userId: integer('user_id')
+  userId: uuid('user_id')
     .notNull()
     .references(() => userTable.id),
   expiresAt: timestamp('expires_at', {

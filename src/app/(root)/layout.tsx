@@ -1,3 +1,4 @@
+'use client'
 import MobileNavbar from "@/components/mobileNavbar";
 import Sidebar from "@/components/Sidebar";
 import { HOME_PATH } from "@/constants/routes";

@@ -5,9 +5,15 @@ import { userTable } from '@/server/db/models'
 import { db } from '@/server/db'
 import { and, eq } from 'drizzle-orm'
 import * as bcrypt from 'bcrypt'
+import { signinSchema } from '@/app/auth/AuthTypes'
 
 async function authorize(credentials: any) {
-  const { email, password } = credentials
+  const parsedCredentials = signinSchema.safeParse(credentials)
+  if (!parsedCredentials.success) {
+    return null
+  }
+  const { email, password } = parsedCredentials.data
+
   let user = null
 
   user = await db.query.userTable.findFirst({
@@ -39,6 +45,9 @@ const credentialProvider = Credentials({
 
 const options = {
   providers: [Discord, credentialProvider],
+  pages: {
+    signIn: '/auth/signin',
+  },
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth(options)
