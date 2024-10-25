@@ -10,31 +10,41 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { faExclamationCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import { USER_PATH } from '@/constants/routes'
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-
 export default function SignIn() {
+  const [previousUrl, setPreviousUrl] = useState<string | null>(null)
+
   const [error, setError] = useState<string | null>(null)
   const form = useForm<SigninFormType>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
       email: '',
       password: '',
-      redirectTo: '/', // TODO: change this to the redirect asked or /
     },
   })
 
+  useEffect(() => {
+    // Get the url from where the user was redirected
+    if (document.referrer && document.referrer !== window.location.href) {
+      setPreviousUrl(document.referrer)
+    }
+  }, [])
+
   async function onSubmit(values: SigninFormType) {
-    const error = await signinAction(values)
+    const error = await signinAction(values, previousUrl)
     if (error) {
       setError(error)
     }
@@ -57,7 +67,10 @@ export default function SignIn() {
           </div>
         )}
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-8"
+          >
             <FormField
               control={form.control}
               name="email"

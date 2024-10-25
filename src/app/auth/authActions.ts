@@ -3,16 +3,21 @@
 import { signIn } from '@/server/auth'
 import { SigninFormType } from './AuthTypes'
 import { AuthError } from 'next-auth'
+import { redirect } from 'next/navigation'
+import { HOME_PATH } from '@/constants/routes'
 
-export async function signinAction(data: SigninFormType) {
+export async function signinAction(
+  data: SigninFormType,
+  redirectTo: string | null
+) {
   try {
     await signIn('credentials', {
       email: data.email,
       password: data.password,
-      redirectTo: data.redirectTo,
+      redirect: false,
     })
+    redirect(redirectTo ?? HOME_PATH)
   } catch (error) {
-    console.log(error)
     if (error instanceof Error) {
       const { type, cause } = error as AuthError
       switch (type) {
@@ -21,7 +26,7 @@ export async function signinAction(data: SigninFormType) {
         case 'CallbackRouteError':
           return cause?.err?.toString()
         default:
-          return 'Something went wrong.'
+          return 'Une erreur inattendue est survenue.'
       }
     }
     throw error

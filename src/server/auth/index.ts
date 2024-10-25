@@ -1,11 +1,12 @@
-import NextAuth from 'next-auth'
-import Discord from 'next-auth/providers/discord'
-import Credentials from 'next-auth/providers/credentials'
-import { userTable } from '@/server/db/models'
-import { db } from '@/server/db'
-import { and, eq } from 'drizzle-orm'
-import * as bcrypt from 'bcrypt'
 import { signinSchema } from '@/app/auth/AuthTypes'
+import { SIGNIN_PATH } from '@/constants/routes'
+import { db } from '@/server/db'
+import { userTable } from '@/server/db/models'
+import * as bcrypt from 'bcrypt'
+import { and, eq } from 'drizzle-orm'
+import NextAuth from 'next-auth'
+import Credentials from 'next-auth/providers/credentials'
+import Discord from 'next-auth/providers/discord'
 
 async function authorize(credentials: any) {
   const parsedCredentials = signinSchema.safeParse(credentials)
@@ -21,16 +22,13 @@ async function authorize(credentials: any) {
   })
 
   if (!user) {
-    console.log('Invalid user or password.')
     return null
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password)
   if (!isPasswordValid) {
-    console.log('Invalid user or password.')
     return null
   }
-
   return user
 }
 
@@ -46,7 +44,7 @@ const credentialProvider = Credentials({
 const options = {
   providers: [Discord, credentialProvider],
   pages: {
-    signIn: '/auth/signin',
+    signIn: SIGNIN_PATH,
   },
 }
 
