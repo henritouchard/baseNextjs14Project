@@ -14,7 +14,6 @@ type SideBarLinkProps = {
 export function DesktopSideBarUserButton({ user, isActive }: SideBarLinkProps) {
   // TODO: allow images
   const userImage = undefined
-  console.log(user)
   return (
     <Link
       href={USER_PATH}

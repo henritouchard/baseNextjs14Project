@@ -16,7 +16,6 @@ type SidebarProps = {
 
 export default function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname()
-  console.log(user)
   function isCurrentPath(path: string) {
     return path === pathname || pathname.startsWith(path + '/')
   }

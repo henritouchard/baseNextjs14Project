@@ -18,11 +18,20 @@ export const authConfig = {
       }
       return true
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      token.role = 'admin'
+    async jwt({ token, user, account, profile }) {
+      if (user) {
+        // Remember to update types/next-auth.d.ts if you need to add new properties
+        token.id = user.id!
+        token.role = user.role
+      }
       return token
     },
     async session({ session, user, token }) {
+      if (session.user && token.id) {
+        session.user.id = token.id
+        session.user.role = token.role
+      }
+
       return Promise.resolve(session)
     },
   },

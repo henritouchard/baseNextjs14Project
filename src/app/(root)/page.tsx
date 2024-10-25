@@ -1,6 +1,5 @@
 import PageLayout from '@/components/ui/PageLayout'
 import { auth } from '@/server/auth'
-import { useSession } from 'next-auth/react'
 
 export default async function Home() {
   const session = await auth()
