@@ -13,7 +13,6 @@ export async function signinAction(data: SigninFormType, redirectTo?: string) {
       password: data.password,
       redirect: false,
     })
-    return redirect(redirectTo || HOME_PATH)
   } catch (error) {
     if (error instanceof Error) {
       const { type, cause } = error as AuthError
@@ -27,7 +26,7 @@ export async function signinAction(data: SigninFormType, redirectTo?: string) {
       }
     }
     throw error
-  } finally {
-    redirect(HOME_PATH)
   }
+
+  redirect(redirectTo || HOME_PATH)
 }
