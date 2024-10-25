@@ -7,7 +7,6 @@ import * as bcrypt from 'bcrypt'
 import { and, eq } from 'drizzle-orm'
 import NextAuth, { NextAuthConfig } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-import Discord from 'next-auth/providers/discord'
 
 async function authorize(credentials: any): Promise<User | null> {
   const parsedCredentials = signinSchema.safeParse(credentials)
@@ -44,7 +43,7 @@ const credentialProvider = Credentials({
 
 const options = {
   ...authConfig,
-  providers: [Discord, credentialProvider],
+  providers: [credentialProvider],
 } satisfies NextAuthConfig
 
 export const { handlers, signIn, signOut, auth } = NextAuth(options)
