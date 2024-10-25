@@ -6,17 +6,14 @@ import { AuthError } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { HOME_PATH } from '@/constants/routes'
 
-export async function signinAction(
-  data: SigninFormType,
-  redirectTo: string | null
-) {
+export async function signinAction(data: SigninFormType, redirectTo?: string) {
   try {
     await signIn('credentials', {
       email: data.email,
       password: data.password,
       redirect: false,
     })
-    redirect(redirectTo ?? HOME_PATH)
+    return redirect(redirectTo || HOME_PATH)
   } catch (error) {
     if (error instanceof Error) {
       const { type, cause } = error as AuthError
@@ -30,5 +27,7 @@ export async function signinAction(
       }
     }
     throw error
+  } finally {
+    redirect(HOME_PATH)
   }
 }

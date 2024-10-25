@@ -1,6 +1,18 @@
-import { db } from '@/server/db'
+'use client'
 
-export default async function User() {
-  const user = await db.query.userTable.findFirst()
-  return <div className="">{JSON.stringify(user)}</div>
+import { signOutAction } from '@/app/(root)/user/userActions'
+import { Button } from '@/components/ui/button'
+import { useSession } from 'next-auth/react'
+
+export default function User() {
+  const session = useSession()
+
+  return (
+    <div className="">
+      {JSON.stringify(session.data?.user)}
+      <form action={signOutAction}>
+        <Button type="submit">Se déconnecter</Button>
+      </form>
+    </div>
+  )
 }

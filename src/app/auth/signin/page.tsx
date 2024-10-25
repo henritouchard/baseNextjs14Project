@@ -13,11 +13,8 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { USER_PATH } from '@/constants/routes'
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
@@ -25,8 +22,6 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function SignIn() {
-  const [previousUrl, setPreviousUrl] = useState<string | null>(null)
-
   const [error, setError] = useState<string | null>(null)
   const form = useForm<SigninFormType>({
     resolver: zodResolver(signinSchema),
@@ -36,15 +31,10 @@ export default function SignIn() {
     },
   })
 
-  useEffect(() => {
-    // Get the url from where the user was redirected
-    if (document.referrer && document.referrer !== window.location.href) {
-      setPreviousUrl(document.referrer)
-    }
-  }, [])
-
   async function onSubmit(values: SigninFormType) {
-    const error = await signinAction(values, previousUrl)
+    const params = new URLSearchParams(window.location.search)
+    const redirectUrl = params.get('redirect') || '/'
+    const error = await signinAction(values, redirectUrl)
     if (error) {
       setError(error)
     }
