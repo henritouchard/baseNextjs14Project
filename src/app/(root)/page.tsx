@@ -8,7 +8,8 @@ export default async function Home() {
     <PageLayout>
       <div className="header-box">
         <h1 className="header-box-title">
-          Bienvenue <span className="text-blue-600">{session?.user?.name}</span>
+          Bienvenue{' '}
+          <span className="text-blue-600">{session?.user?.firstname}</span>
         </h1>
         <p>Voici votre tableau de bord.</p>
       </div>

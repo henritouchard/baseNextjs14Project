@@ -9,6 +9,9 @@ import { ReactNode } from 'react'
 type SideBarLinkProps = {
   user: User
   isActive: boolean
+  icon: ReactNode
+  label: string
+  path: string
 }
 
 export function DesktopSideBarUserButton({ user, isActive }: SideBarLinkProps) {
@@ -28,7 +31,7 @@ export function DesktopSideBarUserButton({ user, isActive }: SideBarLinkProps) {
       <Avatar>
         <AvatarImage src={userImage} />
         <AvatarFallback className="bg-red-500">
-          {user?.name?.[0] ?? 'D'}
+          {user?.firstname?.[0] ?? 'D'}
         </AvatarFallback>
       </Avatar>
       <p

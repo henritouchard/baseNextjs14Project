@@ -23,6 +23,8 @@ export const authConfig = {
         // Remember to update types/next-auth.d.ts if you need to add new properties
         token.id = user.id!
         token.role = user.role
+        token.firstname = user.firstname
+        token.lastname = user.lastname
       }
       return token
     },
@@ -30,6 +32,8 @@ export const authConfig = {
       if (session.user && token.id) {
         session.user.id = token.id
         session.user.role = token.role
+        session.user.firstname = token.firstname
+        session.user.lastname = token.lastname
       }
 
       return Promise.resolve(session)
