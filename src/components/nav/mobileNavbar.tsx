@@ -4,6 +4,9 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { MobileSideBarLink } from '@/components/nav/SidebarLinks'
@@ -33,11 +36,16 @@ export default function MobileNavbar({ user }: MobileNavbarProps) {
         <SheetTrigger>
           <FontAwesomeIcon icon={faBars} />
         </SheetTrigger>
+        <SheetHeader className="hidden">
+          {/* avoid warnings about missing description */}
+          <SheetDescription>MobileMenu</SheetDescription>
+        </SheetHeader>
         <SheetContent
           onOpenAutoFocus={(e) => e.preventDefault()}
           side="left"
           className="border-none"
         >
+          <SheetTitle className="hidden">Menu</SheetTitle>
           <Link
             href={HOME_PATH}
             className={cn(

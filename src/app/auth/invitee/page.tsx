@@ -7,11 +7,12 @@ import { getInvite } from '@/server/repositories/invite'
 import Image from 'next/image'
 import { UserRole, userRoleLabels } from '@/constants/userRoles'
 
-export default async function Invitee({
-  searchParams,
-}: {
-  searchParams: { invite: string }
-}) {
+export default async function Invitee(
+  props: {
+    searchParams: Promise<{ invite: string }>
+  }
+) {
+  const searchParams = await props.searchParams;
   const inviteData = await getInvite(searchParams.invite)
 
   if (!inviteData) {
