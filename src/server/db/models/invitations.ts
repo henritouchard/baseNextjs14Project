@@ -8,8 +8,7 @@ export const invitationTable = pgTable('invitations', {
   inviterId: uuid('inviterId').notNull(),
   inviteeId: uuid('inviteeId'),
   role: userRole('role'),
-
-  consummedAt: timestamp('consummedAt'),
+  consumedAt: timestamp('consumedAt'),
 })
 
 export const invitationRelations = relations(invitationTable, ({ one }) => ({

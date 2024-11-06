@@ -11,7 +11,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 type SidebarProps = {
-  user: User
+  user: User | null
 }
 
 export default function Sidebar({ user }: SidebarProps) {
@@ -50,6 +50,7 @@ export default function Sidebar({ user }: SidebarProps) {
           )
         })}
       </nav>
+
       <DesktopSideBarUserButton user={user} isActive={isUserActive} />
     </div>
   )

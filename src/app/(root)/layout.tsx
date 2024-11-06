@@ -1,16 +1,14 @@
 import MobileNavbar from '@/components/nav/mobileNavbar'
 import Sidebar from '@/components/nav/Sidebar'
 import { HOME_PATH } from '@/constants/routes'
-import { auth } from '@/server/auth'
-import { User } from '@/server/db/models'
+import { getUser } from '@/app/lib/dal'
 import Image from 'next/image'
 import Link from 'next/link'
 
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const session = await auth()
-  const user = session?.user as User
+  const user = await getUser()
 
   return (
     <main className="flex h-screen w-full">

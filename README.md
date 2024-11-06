@@ -6,6 +6,7 @@ npm i -g dotenv-cli
 ```
 
 ## NextAuth setup
+
 ```bash
 # This commands create a NEXTAUTH_SECRET in .env.local:
 npx auth secret

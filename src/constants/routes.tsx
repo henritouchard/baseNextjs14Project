@@ -10,6 +10,7 @@ export const PUBLIC_PATHS = [
   SIGNUP_INVITEE_PATH,
   INTRO_PATH,
 ]
+
 // private pages
 export const FORGOTPASSWORD_PATH = '/forgot-password'
 export const HOME_PATH = '/'

@@ -1,24 +1,21 @@
-import NextAuth from 'next-auth'
-import { authConfig } from '@/server/auth/config'
+import { decrypt } from '@/app/lib/db-session'
 import { PUBLIC_PATHS, SIGNIN_PATH } from '@/constants/routes'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-const { auth } = NextAuth(authConfig)
-
-export default auth((req) => {
+export default async function middleware(req: NextRequest) {
   const { nextUrl } = req
-  const isAuthenticated = !!req.auth
   const isPublicRoute = PUBLIC_PATHS.includes(nextUrl.pathname)
 
-  if (isAuthenticated) return undefined
-
-  if (!isAuthenticated && !isPublicRoute) {
-    const signInUrl = new URL(SIGNIN_PATH, nextUrl)
-    signInUrl.searchParams.set('redirect', nextUrl.pathname)
-    return NextResponse.redirect(signInUrl)
+  // 3. Decrypt the session from the cookie
+  const cookie = req?.cookies?.get('session')?.value
+  const session = await decrypt(cookie)
+  if (!isPublicRoute && !session?.userId) {
+    return NextResponse.redirect(new URL(SIGNIN_PATH, req.nextUrl))
   }
-})
+
+  return NextResponse.next()
+}
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
 }

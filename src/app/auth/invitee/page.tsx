@@ -7,19 +7,17 @@ import { getInvite } from '@/server/repositories/invite'
 import Image from 'next/image'
 import { UserRole, userRoleLabels } from '@/constants/userRoles'
 
-export default async function Invitee(
-  props: {
-    searchParams: Promise<{ invite: string }>
-  }
-) {
-  const searchParams = await props.searchParams;
+export default async function Invitee(props: {
+  searchParams: Promise<{ invite: string }>
+}) {
+  const searchParams = await props.searchParams
   const inviteData = await getInvite(searchParams.invite)
 
   if (!inviteData) {
     return (
       <FullPageErrorMessage message="Invitation non trouvée. Veuillez vérifier le lien d'invitation et réessayer, ou contactez votre organisme de formation." />
     )
-  } else if (inviteData.consummedAt) {
+  } else if (inviteData.consumedAt) {
     return <FullPageErrorMessage message="L'invitation a déjà été utilisée." />
   }
 

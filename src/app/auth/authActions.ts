@@ -1,6 +1,12 @@
 'use server'
 
+import { HOME_PATH, SIGNIN_PATH } from '@/constants/routes'
+import { UserRole } from '@/constants/userRoles'
 import { signIn } from '@/server/auth'
+import { consumeInvite, getInvite } from '@/server/repositories/invite'
+import { createUser } from '@/server/repositories/user'
+import * as bcrypt from 'bcrypt'
+import { redirect } from 'next/navigation'
 import {
   SigninFormType,
   signinSchema,
@@ -9,13 +15,7 @@ import {
   SignUpInviteeFormType,
   signUpInviteeSchema,
 } from './AuthTypes'
-import { AuthError } from 'next-auth'
-import { redirect } from 'next/navigation'
-import { HOME_PATH, SIGNIN_PATH } from '@/constants/routes'
-import { consumeInvite, getInvite } from '@/server/repositories/invite'
-import * as bcrypt from 'bcrypt'
-import { createUser } from '@/server/repositories/user'
-import { UserRole } from '@/constants/userRoles'
+import { deleteSession } from '@/app/lib/db-session'
 
 function encryptPassword(password: string) {
   return bcrypt.hash(password, 10)
@@ -27,27 +27,13 @@ export async function signinAction(data: SigninFormType, redirectTo?: string) {
     if (!parsedData.success) {
       return 'Données invalides.'
     }
-
-    await signIn('credentials', {
+    await signIn({
       email: data.email,
       password: data.password,
-      redirect: false,
     })
   } catch (error) {
-    if (error instanceof Error) {
-      const { type, cause } = error as AuthError
-      switch (type) {
-        case 'CredentialsSignin':
-          return 'Identifiants incorrects.'
-        case 'CallbackRouteError':
-          return cause?.err?.toString()
-        default:
-          return 'Une erreur inattendue est survenue.'
-      }
-    }
-    throw error
+    return 'Une erreur inattendue est survenue.'
   }
-
   redirect(redirectTo || HOME_PATH)
 }
 
@@ -82,7 +68,7 @@ export async function signupNonAdminAction(data: SignUpInviteeFormType) {
   const { inviteId, firstname, lastname, password } = data
 
   const invite = await getInvite(inviteId)
-  if (!invite || invite?.consummedAt) {
+  if (!invite || invite?.consumedAt) {
     return "L'invitation a déjà été utilisée."
   }
 
@@ -100,4 +86,8 @@ export async function signupNonAdminAction(data: SignUpInviteeFormType) {
   }
 
   redirect(SIGNIN_PATH)
+}
+
+export async function signOutAction() {
+  await deleteSession()
 }

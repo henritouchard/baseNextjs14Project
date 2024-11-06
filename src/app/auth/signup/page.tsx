@@ -36,7 +36,6 @@ export default function SignUp() {
   })
 
   async function onSubmit(values: SignUpAdminFormType) {
-    console.log('call front submission with: ', values)
     const error = await signupAdminAction(values)
     if (error) {
       setError(error)

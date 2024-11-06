@@ -23,6 +23,6 @@ export async function createInvite(
 export async function consumeInvite(invite: string, inviteeId: string) {
   return await db
     .update(invitationTable)
-    .set({ consummedAt: new Date(), inviteeId })
+    .set({ consumedAt: new Date(), inviteeId })
     .where(eq(invitationTable.id, invite))
 }

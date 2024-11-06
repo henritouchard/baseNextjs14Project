@@ -7,11 +7,10 @@ import Link from 'next/link'
 import { ReactNode } from 'react'
 
 type SideBarLinkProps = {
-  user: User
+  user: User | null
   isActive: boolean
-  icon: ReactNode
-  label: string
-  path: string
+  icon?: ReactNode
+  label?: string
 }
 
 export function DesktopSideBarUserButton({ user, isActive }: SideBarLinkProps) {
@@ -45,12 +44,20 @@ export function DesktopSideBarUserButton({ user, isActive }: SideBarLinkProps) {
   )
 }
 
+type MobileSideBarUserButtonProps = {
+  user: User
+  isActive: boolean
+  icon?: ReactNode
+  label?: string
+  path: string
+}
+
 export function MobileSideBarUserButton({
   icon,
   label,
   isActive,
   path,
-}: SideBarLinkProps) {
+}: MobileSideBarUserButtonProps) {
   return (
     <SheetClose asChild>
       <Link

@@ -1,7 +1,7 @@
 'use server'
 
-import { signOut } from '@/server/auth'
+import { deleteSession } from '@/app/lib/db-session'
 
 export async function signOutAction() {
-  await signOut()
+  await deleteSession()
 }

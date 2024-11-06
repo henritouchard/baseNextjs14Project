@@ -1,48 +1,15 @@
-'use client'
-
-import { signinAction } from '@/app/auth/authActions'
-import { SigninFormType, signinSchema } from '@/app/auth/AuthTypes'
-import { Button } from '@/components/ui/button'
+import SignInForm from '@/app/auth/signin/signInForm'
+import { getUser } from '@/app/lib/dal'
 import { Card } from '@/components/ui/card'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { SIGNUP_ADMIN_PATH } from '@/constants/routes'
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { HOME_PATH, SIGNUP_ADMIN_PATH } from '@/constants/routes'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { redirect } from 'next/navigation'
 
-export default function SignIn() {
-  const [error, setError] = useState<string | null>(null)
-  const form = useForm<SigninFormType>({
-    resolver: zodResolver(signinSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  })
-
-  async function onSubmit(values: SigninFormType) {
-    const params = new URLSearchParams(window.location.search)
-    const redirectUrl = params.get('redirect') || '/'
-    values.email = values.email.trim()
-    values.password = values.password.trim()
-    const error = await signinAction(values, redirectUrl)
-    if (error) {
-      setError(error)
-    }
-  }
+export default async function SignIn() {
+  const user = await getUser()
+  if (user) redirect(HOME_PATH)
 
   return (
     <div className="flex justify-center items-center h-screen px-4">
@@ -55,55 +22,7 @@ export default function SignIn() {
           alt="logo"
         />
         <h1 className="text-2xl font-bold">Se connecter</h1>
-        {error && (
-          <div className="flex justify-center gap-3 items-center text-red-500">
-            <FontAwesomeIcon className="text-2xl" icon={faExclamationCircle} />
-            <span>{error}</span>
-          </div>
-        )}
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full space-y-8"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="bobApprenant@mail.com"
-                      type="email"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mot de passe</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Be safe" type="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              className="w-full bg-mainGradient hover:bg-mainGradient/90 text-white"
-              type="submit"
-            >
-              Se connecter
-            </Button>
-          </form>
-        </Form>
+        <SignInForm />
         <div className="flex items-center my-2 w-full">
           <hr className="flex-grow border-t  border-gray-300" />
           <span className="mx-4 text-gray-500">ou</span>
