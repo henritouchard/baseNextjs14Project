@@ -9,6 +9,7 @@ export const PUBLIC_PATHS = [
   SIGNUP_ADMIN_PATH,
   SIGNUP_INVITEE_PATH,
   INTRO_PATH,
+  '/pwa',
 ]
 
 // private pages
