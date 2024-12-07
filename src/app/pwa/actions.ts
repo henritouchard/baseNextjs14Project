@@ -1,6 +1,6 @@
 'use server'
 
-import webpush from 'web-push'
+import webpush, { type PushSubscription } from 'web-push'
 
 webpush.setVapidDetails(
   'mailto:henritouchard@gmail.com',
@@ -8,10 +8,16 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY!
 )
 
-let subscription: PushSubscriptionJSON | null = null
+let subscription: PushSubscription | null = null
 
 export async function subscribeUser(sub: PushSubscriptionJSON) {
-  subscription = sub
+  subscription = {
+    endpoint: sub.endpoint,
+    keys: {
+      auth: sub.keys?.auth,
+      p256dh: sub.keys?.p256dh,
+    },
+  } as PushSubscription
   console.log('subscription', subscription)
   // In a production environment, you would want to store the subscription in a database
   // For example: await db.subscriptions.create({ data: sub })

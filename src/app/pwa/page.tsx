@@ -7,6 +7,8 @@ import {
 } from '@/app/pwa/actions'
 import { useState, useEffect } from 'react'
 
+type PushSubscription = globalThis.PushSubscription
+
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
@@ -22,9 +24,7 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
 
 export default function PushNotificationManager() {
   const [isSupported, setIsSupported] = useState(false)
-  const [subscription, setSubscription] = useState<PushSubscription | null>(
-    null
-  )
+  const [subscription, setSubscription] = useState<PushSubscription | null>()
   const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -40,6 +40,9 @@ export default function PushNotificationManager() {
       updateViaCache: 'none',
     })
     const sub = await registration.pushManager.getSubscription()
+    if (!sub) {
+      return
+    }
     setSubscription(sub)
   }
 
@@ -54,9 +57,8 @@ export default function PushNotificationManager() {
       applicationServerKey,
     })
 
-    const subscriptionObject = sub.toJSON()
     setSubscription(sub)
-    await subscribeUser(subscriptionObject)
+    await subscribeUser(sub.toJSON())
   }
 
   async function unsubscribeFromPush() {
