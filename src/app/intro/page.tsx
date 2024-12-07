@@ -1,5 +1,3 @@
-type ForbiddenProps = {}
-
-export default function Forbidden({}: ForbiddenProps) {
+export default function Forbidden() {
   return <>PAGE DE PRESENTATION</>
 }

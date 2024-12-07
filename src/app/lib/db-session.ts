@@ -1,7 +1,5 @@
 import { db } from '@/server/db'
 import { sessionTable } from '@/server/db/models'
-
-// @ts-ignore
 import { SIGNIN_PATH } from '@/constants/routes'
 import { UserRole } from '@/constants/userRoles'
 import { SignJWT, jwtVerify } from 'jose'
@@ -27,7 +25,7 @@ export async function decrypt(session: string | undefined = '') {
     })
     return payload
   } catch (error: any) {
-    console.log('Failed to verify session', error.message)
+    console.error('Failed to verify session', error.message)
     return null
   }
 }

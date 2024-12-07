@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next'
- 
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: process.env.APP_NAME || 'Default App Name',
     short_name: process.env.SHORT_NAME || 'NextPWA',
-    description: process.env.DESCRIPTION || 'A Progressive Web App built with Next.js',
+    description:
+      process.env.DESCRIPTION || 'A Progressive Web App built with Next.js',
     start_url: '/',
     display: 'standalone',
     background_color: process.env.BACKGROUND_COLOR || '#ffffff',

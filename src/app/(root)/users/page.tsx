@@ -1,3 +1,3 @@
 export default function Users() {
-  return <div className="">USERS</div>;
+  return <div className="">USERS</div>
 }

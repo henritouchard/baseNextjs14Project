@@ -32,6 +32,7 @@ export async function signinAction(data: SigninFormType, redirectTo?: string) {
       password: data.password,
     })
   } catch (error) {
+    console.error(error)
     return 'Une erreur inattendue est survenue.'
   }
   redirect(redirectTo || HOME_PATH)
@@ -54,6 +55,7 @@ export async function signupAdminAction(data: SignUpAdminFormType) {
       role: UserRole.ADMIN,
     })
   } catch (error) {
+    console.error(error)
     return 'Une erreur inattendue est survenue.'
   }
 
@@ -82,6 +84,7 @@ export async function signupNonAdminAction(data: SignUpInviteeFormType) {
     })
     consumeInvite(inviteId, user.id)
   } catch (error) {
+    console.error(error)
     return 'Une erreur inattendue est survenue.'
   }
 

@@ -1,4 +1,3 @@
-import { UserRole } from '@/constants/userRoles'
 import { z } from 'zod'
 
 export const signinSchema = z.object({

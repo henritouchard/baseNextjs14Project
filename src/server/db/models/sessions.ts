@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import { pgTable, timestamp, uuid } from 'drizzle-orm/pg-core'
 
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { userTable } from './users'

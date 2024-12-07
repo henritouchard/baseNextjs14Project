@@ -1,11 +1,10 @@
 import InviteeForm from '@/app/auth/invitee/inviteeForm'
-import { useRouter } from 'next/router'
 import FullPageErrorMessage from '@/components/fullPageErrorMessage'
 import { Card } from '@/components/ui/card'
 import { getInvite } from '@/server/repositories/invite'
 
-import Image from 'next/image'
 import { UserRole, userRoleLabels } from '@/constants/userRoles'
+import Image from 'next/image'
 
 export default async function Invitee(props: {
   searchParams: Promise<{ invite: string }>

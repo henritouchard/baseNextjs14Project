@@ -51,7 +51,7 @@ export const getRequiredUser = cache(async (): Promise<User | null> => {
     const user = data[0]
     return user as User
   } catch (error) {
-    console.log('Failed to fetch user')
+    console.error('Failed to fetch user', error)
     return null
   }
 })
@@ -76,7 +76,7 @@ export const getUser = cache(async (): Promise<User | null> => {
     const user = data[0]
     return user as User
   } catch (error) {
-    console.log('Failed to fetch user')
+    console.error('Failed to fetch user', error)
     return null
   }
 })

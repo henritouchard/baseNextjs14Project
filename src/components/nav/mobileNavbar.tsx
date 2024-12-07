@@ -25,7 +25,7 @@ type MobileNavbarProps = {
 
 export default function MobileNavbar({ user }: MobileNavbarProps) {
   const pathname = usePathname()
-
+  console.log(user)
   function isCurrentPath(path: string) {
     return path === pathname || pathname.startsWith(path + '/')
   }

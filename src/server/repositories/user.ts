@@ -1,5 +1,5 @@
 import { db } from '@/server/db'
-import { NewUser, User, userTable, UserWithPassword } from '@/server/db/models'
+import { NewUser, User, userTable } from '@/server/db/models'
 import { eq } from 'drizzle-orm'
 
 export async function createUser(user: NewUser): Promise<User> {
@@ -11,6 +11,7 @@ export async function createUser(user: NewUser): Promise<User> {
   }
 
   const newUsers = await db.insert(userTable).values(user).returning()
-  const { password, ...userWithoutPassword } = newUsers[0]
+  const { password: _password, ...userWithoutPassword } = newUsers[0] // eslint-disable-line @typescript-eslint/no-unused-vars
+
   return userWithoutPassword
 }
